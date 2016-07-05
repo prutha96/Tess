@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Bitmap bitmap;
             //imageView.setImageBitmap(imageBitmap);
 
             try {
@@ -138,19 +139,30 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+            try {
+                File f = new File(path, "image.png");
+                bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
+
+            System.out.println(path);
+
             //textView.setText(path);
 
             try {
                 // imageBitmap = fixImage(imageBitmap, path);
             } catch (Exception e) {
-                //textView.setText("IOException");
                 e.printStackTrace();
             }
 
             loadImageFromStorage(path);
 
-            performOCR(imageBitmap);
-        }else{
+                performOCR(bitmap);
+            }
+            catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        else{
            try {
                Uri uri = data.getData();
                System.out.println("uri:::" + uri.getPath());
@@ -261,7 +273,4 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-
-
 }

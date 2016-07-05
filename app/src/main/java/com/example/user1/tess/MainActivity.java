@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Process;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import com.example.user1.tess.Processing;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -129,38 +132,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            Bitmap bitmap;
-            //imageView.setImageBitmap(imageBitmap);
+            Bitmap bitmap = (Bitmap) extras.get("data");
+
+            Processing processing = new Processing();
+
+            bitmap = processing.convertToARGB8888(bitmap);
+            bitmap = processing.thresholding(bitmap);
+            bitmap = processing.sharpen(bitmap);
 
             try {
-                path = saveImageToInternalStorage(imageBitmap);
+                path = saveImageToInternalStorage(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            try {
-                File f = new File(path, "image.png");
-                bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
-                bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 
             System.out.println(path);
 
             //textView.setText(path);
 
-            try {
-                // imageBitmap = fixImage(imageBitmap, path);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
             loadImageFromStorage(path);
 
-                performOCR(bitmap);
-            }
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            performOCR(bitmap);
         }
 
         else{

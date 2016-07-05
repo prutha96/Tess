@@ -12,7 +12,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.user1.tess.MainActivity"
     tools:showIn="@layout/activity_main"
-    android:weightSum="1">
+    android:weightSum="4">
 
     <Button
         android:layout_width="wrap_content"
@@ -24,25 +24,24 @@
         android:layout_gravity="center_horizontal" />
 
     <Button
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/select_text"
         android:id="@+id/select"
         android:onClick="dispatchSelectPictureIntent"
-        android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal" />
 
     <ImageView
         android:layout_width="276dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:id="@+id/imageView"
-        android:layout_below="@+id/click"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="64dp"
         android:minWidth="@dimen/min_image_width"
         android:minHeight="@dimen/min_image_height"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.32" />
+        android:layout_weight="3" />
 
     <!--
     <TextView

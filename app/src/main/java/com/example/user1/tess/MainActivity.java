@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 File f = new File(path, "image.png");
                 bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
+                bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 
             System.out.println(path);
 
@@ -171,6 +172,9 @@ public class MainActivity extends AppCompatActivity {
                if (null != uri) {
                    imageView.setImageURI(uri);
                }
+
+               imageBitmap = imageBitmap.copy(Bitmap.Config.ARGB_8888, true);
+
                performOCR(imageBitmap);
            }catch (Exception ex){
                ex.printStackTrace();

@@ -3,8 +3,6 @@ package com.example.user1.tess;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import com.example.user1.tess.Convolution;
-
 /**
  * Created by user1 on 7/5/2016.
  */

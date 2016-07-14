@@ -36,6 +36,9 @@ import java.io.IOException;
 
 import com.example.user1.tess.Processing;
 
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.OpenCVLoader;
+
 public class MainActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.user1.tess.MESSAGE";
@@ -46,9 +49,22 @@ public class MainActivity extends AppCompatActivity {
     Button click;
     Button select;
     ImageView imageView;
-    //TextView textView;
     String path;
     public static final String TAG = "PermissionTag";
+
+    private BaseLoaderCallback mOpenCVCallback = new BaseLoaderCallback(this) {
+        @Override
+        public void onManagerConnected(int status) {
+            switch (status) {
+                case BaseLoaderCallback.SUCCESS:
+                    //Add code
+                    break;
+                default:
+                    super.onManagerConnected(status);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +77,12 @@ public class MainActivity extends AppCompatActivity {
         select = (Button) findViewById(R.id.select);
         imageView = (ImageView) findViewById(R.id.imageView);
         //textView = (TextView) findViewById(R.id.textView);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mOpenCVCallback);
     }
 
     public boolean isStoragePermissionGranted() {
@@ -134,11 +156,23 @@ public class MainActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap bitmap = (Bitmap) extras.get("data");
 
+
             Processing processing = new Processing();
 
             bitmap = processing.convertToARGB8888(bitmap);
             bitmap = processing.thresholding(bitmap);
             bitmap = processing.sharpen(bitmap);
+
+            /*
+            OpenCVProcessing openCVProcessing = new OpenCVProcessing(bitmap);
+
+            openCVProcessing.gaussianBlur();
+            openCVProcessing.gaussianAdaptiveThresholding();
+            openCVProcessing.sharpen();
+            openCVProcessing.medianBlur();
+
+            bitmap = openCVProcessing.getProcessedBitmap();
+            */
 
             try {
                 path = saveImageToInternalStorage(bitmap);
@@ -147,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             System.out.println(path);
-
-            //textView.setText(path);
 
             loadImageFromStorage(path);
 
@@ -205,45 +237,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    Bitmap fixImage(Bitmap bitmap, String path) throws IOException {
-        ExifInterface exif = new ExifInterface(path);
-
-        int exifOrientation = exif.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_NORMAL
-        );
-        int rotate = 0;
-
-        switch (exifOrientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                rotate = 90;
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                rotate = 180;
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                rotate = 270;
-                break;
-        }
-
-        if (rotate != 0) {
-            int width = bitmap.getWidth();
-            int height = bitmap.getHeight();
-
-            //Setting pre rotate
-            Matrix matrix = new Matrix();
-            matrix.postRotate(rotate);
-
-            //Rotating bitmap and converting to ARGB_8888
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
-        }
-
-        //bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-        return bitmap;
-    }
-    */
-
     void performOCR(Bitmap bitmap) {
         try {
             boolean StoragePermissionGranted = isStoragePermissionGranted();
@@ -261,7 +254,6 @@ public class MainActivity extends AppCompatActivity {
             String recognisedText = baseAPI.getUTF8Text();
             baseAPI.end();
 
-            //textView.setText(recognisedText);
             Intent text = new Intent(this, DisplayText.class);
             text.putExtra(EXTRA_MESSAGE, recognisedText);
             startActivity(text);

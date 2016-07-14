@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.example.user1.tess.MESSAGE";
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_IMAGE_SELECT = 2;
+    //static final int REQUEST_IMAGE_SELECT = 2;
 
     Button click;
     Button select;
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     String path;
     public static final String TAG = "PermissionTag";
 
+    /*
     private BaseLoaderCallback mOpenCVCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,15 +78,15 @@ public class MainActivity extends AppCompatActivity {
         click = (Button) findViewById(R.id.click);
         select = (Button) findViewById(R.id.select);
         imageView = (ImageView) findViewById(R.id.imageView);
-        //textView = (TextView) findViewById(R.id.textView);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mOpenCVCallback);
+        //OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mOpenCVCallback);
     }
 
+    /*
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
             //resume tasks needing this permission
         }
     }
+    */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -140,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
 
+    /*
     protected void dispatchSelectPictureIntent(View view2) {
         boolean StoragePermissionGranted = isStoragePermissionGranted();
 
@@ -149,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(selectPictureIntent, REQUEST_IMAGE_SELECT);
         }
     }
+    */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -156,23 +161,11 @@ public class MainActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap bitmap = (Bitmap) extras.get("data");
 
-
             Processing processing = new Processing();
 
             bitmap = processing.convertToARGB8888(bitmap);
             bitmap = processing.thresholding(bitmap);
             bitmap = processing.sharpen(bitmap);
-
-            /*
-            OpenCVProcessing openCVProcessing = new OpenCVProcessing(bitmap);
-
-            openCVProcessing.gaussianBlur();
-            openCVProcessing.gaussianAdaptiveThresholding();
-            openCVProcessing.sharpen();
-            openCVProcessing.medianBlur();
-
-            bitmap = openCVProcessing.getProcessedBitmap();
-            */
 
             try {
                 path = saveImageToInternalStorage(bitmap);
@@ -187,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
             performOCR(bitmap);
         }
 
+        /*
         else{
            try {
                Uri uri = data.getData();
@@ -204,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                ex.printStackTrace();
            }
         }
-
+        */
     }
 
     public String saveImageToInternalStorage(Bitmap image) throws IOException {
@@ -239,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
 
     void performOCR(Bitmap bitmap) {
         try {
-            boolean StoragePermissionGranted = isStoragePermissionGranted();
+            //boolean StoragePermissionGranted = isStoragePermissionGranted();
 
             TessBaseAPI baseAPI = new TessBaseAPI();
 
@@ -257,7 +251,8 @@ public class MainActivity extends AppCompatActivity {
             Intent text = new Intent(this, DisplayText.class);
             text.putExtra(EXTRA_MESSAGE, recognisedText);
             startActivity(text);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }

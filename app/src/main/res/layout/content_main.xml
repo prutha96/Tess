@@ -23,15 +23,6 @@
         android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/select_text"
-        android:id="@+id/select"
-        android:onClick="dispatchSelectPictureIntent"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="center_horizontal" />
-
     <ImageView
         android:layout_width="276dp"
         android:layout_height="wrap_content"

@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
 
     void performOCR(Bitmap bitmap) {
         try {
-
             TessBaseAPI baseAPI = new TessBaseAPI();
 
             String datapath = Environment.getExternalStorageDirectory() + "/tesseract/";

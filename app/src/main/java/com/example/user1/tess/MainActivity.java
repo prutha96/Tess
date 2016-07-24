@@ -36,6 +36,7 @@ import java.io.IOException;
 
 import com.example.user1.tess.Processing;
 
+//Use for OpenCV implementation:
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.OpenCVLoader;
 
@@ -44,14 +45,13 @@ public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.example.user1.tess.MESSAGE";
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    //static final int REQUEST_IMAGE_SELECT = 2;
 
     Button click;
-    Button select;
     ImageView imageView;
     String path;
     public static final String TAG = "PermissionTag";
 
+    //Use for OpenCV implementation:
     /*
     private BaseLoaderCallback mOpenCVCallback = new BaseLoaderCallback(this) {
         @Override
@@ -76,65 +76,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         click = (Button) findViewById(R.id.click);
-        select = (Button) findViewById(R.id.select);
         imageView = (ImageView) findViewById(R.id.imageView);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        //Use for OpenCV implementation:
         //OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mOpenCVCallback);
-    }
-
-    /*
-    public boolean isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                Log.v(TAG, "Permission is granted");
-                return true;
-            } else {
-
-                Log.v(TAG, "Permission is revoked");
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                return false;
-            }
-        } else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG, "Permission is granted");
-            return true;
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Log.v(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
-            //resume tasks needing this permission
-        }
-    }
-    */
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     protected void dispatchTakePictureIntent(View view1) {
@@ -142,18 +91,6 @@ public class MainActivity extends AppCompatActivity {
         if (takePictureIntent.resolveActivity(getPackageManager()) != null)
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
-
-    /*
-    protected void dispatchSelectPictureIntent(View view2) {
-        boolean StoragePermissionGranted = isStoragePermissionGranted();
-
-        if (StoragePermissionGranted) {
-            Intent selectPictureIntent = new Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(selectPictureIntent, REQUEST_IMAGE_SELECT);
-        }
-    }
-    */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -179,26 +116,6 @@ public class MainActivity extends AppCompatActivity {
 
             performOCR(bitmap);
         }
-
-        /*
-        else{
-           try {
-               Uri uri = data.getData();
-               System.out.println("uri:::" + uri.getPath());
-               Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(),uri);
-               System.out.println("bitmap:::" + imageBitmap);
-               if (null != uri) {
-                   imageView.setImageURI(uri);
-               }
-
-               imageBitmap = imageBitmap.copy(Bitmap.Config.ARGB_8888, true);
-
-               performOCR(imageBitmap);
-           }catch (Exception ex){
-               ex.printStackTrace();
-           }
-        }
-        */
     }
 
     public String saveImageToInternalStorage(Bitmap image) throws IOException {

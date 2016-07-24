@@ -43,14 +43,4 @@
         android:layout_gravity="center_horizontal"
         android:layout_weight="3" />
 
-    <!--
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="95dp" />
-    -->
-
 </LinearLayout>

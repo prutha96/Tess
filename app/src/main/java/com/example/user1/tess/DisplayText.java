@@ -26,5 +26,4 @@ public class DisplayText extends AppCompatActivity {
         TextView textView = (TextView) findViewById(R.id.text);
         textView.setText(message);
     }
-
 }

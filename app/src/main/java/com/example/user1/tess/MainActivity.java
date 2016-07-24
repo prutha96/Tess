@@ -55,9 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         click = (Button) findViewById(R.id.click);
-        select = (Button) findViewById(R.id.select);
         imageView = (ImageView) findViewById(R.id.imageView);
-        //textView = (TextView) findViewById(R.id.textView);
     }
 
     public boolean isStoragePermissionGranted() {
@@ -138,15 +136,6 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            //textView.setText(path);
-
-            try {
-                // imageBitmap = fixImage(imageBitmap, path);
-            } catch (Exception e) {
-                //textView.setText("IOException");
-                e.printStackTrace();
-            }
-
             loadImageFromStorage(path);
 
             performOCR(imageBitmap);
@@ -196,45 +185,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-    /*
-    Bitmap fixImage(Bitmap bitmap, String path) throws IOException {
-        ExifInterface exif = new ExifInterface(path);
-
-        int exifOrientation = exif.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_NORMAL
-        );
-        int rotate = 0;
-
-        switch (exifOrientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                rotate = 90;
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                rotate = 180;
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                rotate = 270;
-                break;
-        }
-
-        if (rotate != 0) {
-            int width = bitmap.getWidth();
-            int height = bitmap.getHeight();
-
-            //Setting pre rotate
-            Matrix matrix = new Matrix();
-            matrix.postRotate(rotate);
-
-            //Rotating bitmap and converting to ARGB_8888
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false);
-        }
-
-        //bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-        return bitmap;
-    }
-    */
 
     void performOCR(Bitmap bitmap) {
         try {
